@@ -144,7 +144,36 @@ function page(p){["home","chat","character","settings"].forEach(x=>$(x).classLis
 document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>page(b.dataset.page)));
 $("openChat").onclick=()=>page("chat");$("editCharacter").onclick=()=>page("character");$("backHome").onclick=()=>page("home");
 $("saveCharacter").onclick=()=>{let n=$("nameInput").value.trim();if(!n){toast("Please enter a character name.");return}character={name:n,age:Math.min(99,Math.max(18,Number($("ageInput").value)||21)),bio:$("bioInput").value.trim(),personality:$("personalityInput").value.trim()};save();paint();page("home");toast("Character saved on this device.")};
-$("messageForm").onsubmit=e=>{e.preventDefault();let value=$("messageInput").value.trim();if(!value)return;messages.push({text:value,me:true,time:timeNow()});save();$("messageInput").value="";paint();};
+$("messageForm").onsubmit=e=>{e.preventDefault();let value=$("messageInput").value.trim();if(!value)return;messages.push({text:value,me:true,time:timeNow()});
+save();
+$("messageInput").value="";
+paint();
+
+fetch("https://presence-ai-backend.tanyasinghtanyatanya.workers.dev/api/chat", {
+  method: "POST",
+  headers: {"Content-Type": "application/json"},
+  body: JSON.stringify({
+    message: value,
+    character: JSON.parse(localStorage.getItem("presenceCharacter") || "{}")
+  })
+})
+.then(async response => {
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || "AI request failed");
+  return data;
+})
+.then(data => {
+  messages.push({
+    text: data.reply,
+    me: false,
+    time: timeNow()
+  });
+  save();
+  paint();
+})
+.catch(error => {
+  console.error("Presence AI error:", error);
+});
 $("attachBtn").onclick=()=>$("imageInput").click();
 $("imageInput").onchange=e=>{let file=e.target.files[0];if(!file)return;if(!file.type.startsWith("image/")){toast("Please choose an image.");return}if(file.size>1200000){toast("Choose an image smaller than 1.2 MB.");e.target.value="";return}let reader=new FileReader();reader.onload=()=>{messages.push({text:"",image:reader.result,me:true,time:timeNow()});save();paint();};reader.readAsDataURL(file);e.target.value=""};
 $("clearChat").onclick=()=>{if(confirm("Delete all locally saved messages?")){messages=[];save();paint();toast("Conversation history deleted.")}};
