@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101018">
+<title>Presence AI</title>
+<style>
+:root{--bg:#101018;--panel:#191923;--panel2:#222230;--text:#f5f2fa;--muted:#aaa6b8;--accent:#c5a3ff;--line:#343244}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px system-ui,-apple-system,Segoe UI,sans-serif}
+.app{max-width:520px;margin:auto;min-height:100vh;display:flex;flex-direction:column}
+header{padding:22px 18px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}
+.logo{font-weight:800;font-size:22px;letter-spacing:.3px}.logo span{color:var(--accent)}button{border:0;cursor:pointer;font:inherit;color:inherit}
+.icon{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:9px 12px}
+main{padding:18px;flex:1}.eyebrow{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:1.6px}
+h1{font-size:27px;margin:7px 0 5px}.sub{color:var(--muted);margin:0 0 20px;line-height:1.5}
+.card{background:linear-gradient(145deg,#242235,#191923);border:1px solid var(--line);border-radius:20px;padding:17px;margin-bottom:15px}
+.person{display:flex;align-items:center;gap:14px}.avatar{width:58px;height:58px;border-radius:18px;background:linear-gradient(135deg,#8b6acb,#e4b2ca);display:grid;place-items:center;font-size:27px}
+.person h2{margin:0 0 4px;font-size:18px}.person p{margin:0;color:var(--muted);font-size:13px}
+.pill{display:inline-block;margin-top:9px;padding:5px 9px;border-radius:30px;background:#342b48;color:#d8c5ff;font-size:11px}
+.actions{display:flex;gap:9px;margin-top:16px}.primary{background:var(--accent);color:#171220;font-weight:700;border-radius:12px;padding:12px 16px;flex:1}.secondary{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px}
+.section-title{font-size:16px;margin:22px 0 11px}.feature{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}.feature:last-child{border:0}.feature b{display:block;font-size:14px}.feature small{color:var(--muted)}
+nav{position:sticky;bottom:0;background:#15151f;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:10px 4px calc(10px + env(safe-area-inset-bottom))}
+nav button{background:none;color:var(--muted);font-size:12px;padding:6px 12px}nav button.active{color:var(--accent)}
+.chatbox{height:calc(100vh - 205px);min-height:420px;display:flex;flex-direction:column}
+.chathead{display:flex;align-items:center;gap:10px;padding-bottom:13px;border-bottom:1px solid var(--line)}.chathead .avatar{width:42px;height:42px;font-size:20px}
+.messages{flex:1;overflow:auto;padding:15px 0;display:flex;flex-direction:column;gap:10px}
+.bubble{max-width:84%;padding:11px 13px;border-radius:16px;line-height:1.4;background:var(--panel2);align-self:flex-start;white-space:pre-wrap;overflow-wrap:anywhere}
+.bubble.me{background:#4d3c6c;align-self:flex-end}.time{display:block;color:#c7bfd5;font-size:10px;margin-top:5px}
+.composer{display:flex;gap:8px;border-top:1px solid var(--line);padding-top:12px}.composer input,.field input,.field textarea,.field select{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:13px;color:var(--text);font:inherit;outline:none}.composer .primary{flex:0 0 auto}
+.field{margin:14px 0}.field label{display:block;color:var(--muted);font-size:13px;margin-bottom:7px}.field textarea{min-height:85px;resize:vertical}
+.notice{background:#292338;border:1px solid #594875;border-radius:13px;padding:12px;color:#ddd1f1;font-size:13px;line-height:1.5}
+.hidden{display:none!important}.empty{color:var(--muted);text-align:center;padding:35px 10px}
+</style>
+</head>
+<body><div class="app">
+<header><div class="logo">presence<span>.</span>ai</div><button class="icon" id="themeBtn" aria-label="Toggle theme">☼</button></header>
+<main>
+<section id="home">
+<div class="eyebrow">Your private little universe</div><h1>Someone to talk to.</h1><p class="sub">Create fictional characters with their own stories, personalities and voices.</p>
+<div class="card"><div class="person"><div class="avatar" id="homeAvatar">✦</div><div><h2 id="homeName">Your first character</h2><p id="homeBio">A new story starts here.</p><span class="pill">FICTIONAL CHARACTER</span></div></div><div class="actions"><button class="primary" id="openChat">Open conversation</button><button class="secondary" id="editCharacter">Edit</button></div></div>
+<div class="notice">This is the first app foundation. Your character and messages are saved on this device. AI replies, cloud sync, real voice calls and push notifications will be connected in later stages. They are not active yet.</div>
+<h3 class="section-title">Your space</h3>
+<div class="feature"><span>💬</span><div><b>Private conversations</b><small>Keep your chat history on this device.</small></div></div>
+<div class="feature"><span>🧠</span><div><b>Character personality</b><small>Give your character a distinct identity.</small></div></div>
+<div class="feature"><span>🎙️</span><div><b>Voice features coming later</b><small>We'll connect real speech services in a later stage.</small></div></div>
+</section>
+<section id="chat" class="hidden"><div class="chatbox"><div class="chathead"><div class="avatar" id="chatAvatar">✦</div><div><b id="chatName">Character</b><div style="color:var(--muted);font-size:12px">Fictional character · AI connection not yet enabled</div></div></div><div class="messages" id="messages"></div><div class="notice" style="margin-bottom:10px">Messages are saved locally. AI responses are not connected yet, so this version won't pretend to reply as your character.</div><form class="composer" id="messageForm"><input id="messageInput" placeholder="Write a message…" autocomplete="off"><button class="primary" type="submit">Send</button></form></div></section>
+<section id="character" class="hidden"><div class="eyebrow">Make them your own</div><h1>Character details</h1><p class="sub">Create a fictional person with a consistent personality.</p>
+<div class="field"><label>Character name</label><input id="nameInput" maxlength="32" placeholder="e.g. Aarav"></div>
+<div class="field"><label>Age (fictional character, 18+)</label><input id="ageInput" type="number" min="18" max="99" value="21"></div>
+<div class="field"><label>Short background</label><textarea id="bioInput" maxlength="300" placeholder="Where are they from? What is their story?"></textarea></div>
+<div class="field"><label>Personality and communication style</label><textarea id="personalityInput" maxlength="500" placeholder="Warm, witty, thoughtful, a little sarcastic…"></textarea></div>
+<button class="primary" id="saveCharacter" style="width:100%">Save character</button>
+</section>
+<section id="settings" class="hidden"><div class="eyebrow">Your controls</div><h1>Settings</h1><p class="sub">Manage this device's locally stored app data.</p><div class="notice">This starter version stores data in this browser only. Clearing browser data may erase it. Secure accounts and cloud backup will be added in a later stage.</div><h3 class="section-title">Privacy</h3><button class="secondary" id="clearChat">Delete conversation history</button></section>
+</main>
+<nav><button class="active" data-page="home">⌂<br>Home</button><button data-page="chat">♡<br>Chat</button><button data-page="character">✧<br>Character</button><button data-page="settings">⚙<br>Settings</button></nav>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const defaults={name:"Your first character",age:21,bio:"A new story starts here.",personality:"Warm, curious and thoughtful."};
+let character={...defaults,...JSON.parse(localStorage.getItem("presenceCharacter")||"{}")};
+let messages=JSON.parse(localStorage.getItem("presenceMessages")||"[]");
+function save(){localStorage.setItem("presenceCharacter",JSON.stringify(character));localStorage.setItem("presenceMessages",JSON.stringify(messages))}
+function paint(){ $("homeName").textContent=character.name;$("chatName").textContent=character.name;$("homeBio").textContent=character.bio||"A fictional character";$("nameInput").value=character.name;$("ageInput").value=character.age;$("bioInput").value=character.bio;$("personalityInput").value=character.personality;$("messages").innerHTML="";if(!messages.length){$("messages").innerHTML='<div class="empty">Your conversation begins here.<br>Send your first message below.</div>'}messages.forEach(m=>{let d=document.createElement("div");d.className="bubble"+(m.me?" me":"");d.textContent=m.text;let t=document.createElement("span");t.className="time";t.textContent=m.time;d.appendChild(t);$("messages").appendChild(d)});$("messages").scrollTop=$("messages").scrollHeight}
+function page(p){["home","chat","character","settings"].forEach(x=>$(x).classList.toggle("hidden",x!==p));document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===p));if(p==="chat")paint()}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>page(b.dataset.page));
+$("openChat").onclick=()=>page("chat");$("editCharacter").onclick=()=>page("character");
+$("saveCharacter").onclick=()=>{let n=$("nameInput").value.trim();if(!n){alert("Please enter a character name.");return}character={name:n,age:Math.max(18,Number($("ageInput").value)||21),bio:$("bioInput").value.trim(),personality:$("personalityInput").value.trim()};save();paint();page("home");alert("Character saved on this device.")};
+$("messageForm").onsubmit=e=>{e.preventDefault();let text=$("messageInput").value.trim();if(!text)return;messages.push({text,me:true,time:new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})});save();$("messageInput").value="";paint()};
+$("clearChat").onclick=()=>{if(confirm("Delete all locally saved messages?")){messages=[];save();paint();alert("Conversation history deleted.")}};
+$("themeBtn").onclick=()=>{let light=document.body.dataset.theme!=="light";document.body.dataset.theme=light?"light":"dark";document.documentElement.style.setProperty("--bg",light?"#f5f2fa":"#101018");document.documentElement.style.setProperty("--panel",light?"#fff":"#191923");document.documentElement.style.setProperty("--panel2",light?"#ebe7f2":"#222230");document.documentElement.style.setProperty("--text",light?"#211b2b":"#f5f2fa");document.documentElement.style.setProperty("--muted",light?"#6e6878":"#aaa6b8");document.documentElement.style.setProperty("--line",light?"#d8d1e2":"#343244")};
+paint();
+</script></body></html>
